@@ -45,6 +45,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
              //对某些url放行
             .antMatchers("/login.html","/error.html")
             .permitAll()
+//                放行静态资源
+//            .antMatchers("/images/**").permitAll()
             //所有请求都需要认证
             .anyRequest()
             .authenticated();
