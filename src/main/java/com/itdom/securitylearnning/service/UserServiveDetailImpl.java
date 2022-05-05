@@ -23,6 +23,6 @@ public class UserServiveDetailImpl implements UserDetailsService {
         }
         String encode = passwordEncoder.encode("test123");
 
-        return new User(username,encode, AuthorityUtils.commaSeparatedStringToAuthorityList("admin,normol"));
+        return new User(username,encode, AuthorityUtils.commaSeparatedStringToAuthorityList("admin,normol,ROLE_user"));
     }
 }

@@ -30,11 +30,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 //当拦截到url为/user/login的表单请求的时候就走登录请求
                 .loginProcessingUrl("/login")
                 //登录成功后跳转页面，必须是post请求
-//                .successForwardUrl("/toMain")
+                .successForwardUrl("/toMain")
                 //默认的ForwardAuthenticationSuccessHandler无法处理外部连接
 //                .successForwardUrl("http://www.baidu.com")
 //                ④⑤⑥⑦⑧⑨⑩
-                .successHandler(new SuccessHandler("http://www.baidu.com"))
+//                .successHandler(new SuccessHandler("http://www.baidu.com"))
 //                .failureForwardUrl("/toError")
                 .failureHandler(new FailureHandler("/error.html"))
                 //自定义登录表单
@@ -47,6 +47,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .permitAll()
 //                放行静态资源
 //            .antMatchers("/images/**").permitAll()
+                //如果添加了server.servlet.context-path=/security就需要在路径上添加对于的path放行才可以，否则失效
+//               .mvcMatchers("/security/xxx").permitAll()
+//              .antMatchers("/Home.html").hasAuthority("admin2")
+                //校验访问需要某个具体角色的资源需要的角色
+//              .antMatchers("/Home.html").hasRole("user2")
+              .antMatchers("/Home.html").hasAnyRole("user2","user")
             //所有请求都需要认证
             .anyRequest()
             .authenticated();
