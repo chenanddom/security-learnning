@@ -1,0 +1,16 @@
+server:
+  port: 8090
+  servlet:
+    session:
+      cookie:
+        name: OAUTH2-CLIENT-SESSIONID01
+security:
+  oauth2:
+    client:
+      client-id: server-edge
+      client-secret: test123
+      access-token-uri: http://localhost:8089/oauth/token
+      user-authorization-uri: http://localhost:8089/oauth/authorize
+    resource:
+      jwt:
+        key-uri: http://localhost:8089/oauth/token_key
