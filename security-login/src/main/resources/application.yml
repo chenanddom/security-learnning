@@ -1,0 +1,26 @@
+server:
+  port: 8088
+#server.servlet.context-path=/security
+
+spring:
+  application:
+    # nacos会根据服务的名称回去配置文件
+    name: seata-order
+  profiles:
+    active: dev
+  main:
+    allow-circular-references: true
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    druid:
+      url: jdbc:mysql://127.0.0.1:3306/security-db?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+      username: root
+      password: root@123
+
+
+mybatis:
+  mapper-locations: classpath*:com/itdom/cloud/order/mapper/*Mapper.xml
+  type-aliases-package: com.itdom.cloud.order.model
+  configuration:
+    map-underscore-to-camel-case: true

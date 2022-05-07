@@ -1,13 +1,19 @@
 package com.itdom.securitylearnning.configuration;
 
+import com.itdom.securitylearnning.handler.CustomerAccessDeniedHandler;
 import com.itdom.securitylearnning.handler.FailureHandler;
-import com.itdom.securitylearnning.handler.SuccessHandler;
+import com.itdom.securitylearnning.service.UserServiveDetailImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+
+import javax.sql.DataSource;
 
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -15,6 +21,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
+    @Bean
+    public PersistentTokenRepository getPersistentTokenRepository(DataSource dataSource){
+        JdbcTokenRepositoryImpl jdbcTokenRepository = new JdbcTokenRepositoryImpl();
+        //第一启动需要创建表，第二次需要注释掉
+//        jdbcTokenRepository.setCreateTableOnStartup(true);
+        jdbcTokenRepository.setDataSource(dataSource);
+        return jdbcTokenRepository;
+    }
+    @Autowired
+    private CustomerAccessDeniedHandler customerAccessDeniedHandler;
+    @Autowired
+    private UserServiveDetailImpl userServiveDetail;
+    @Autowired
+    private PersistentTokenRepository persistentTokenRepository;
+
+
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -52,12 +75,32 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //              .antMatchers("/Home.html").hasAuthority("admin2")
                 //校验访问需要某个具体角色的资源需要的角色
 //              .antMatchers("/Home.html").hasRole("user2")
-              .antMatchers("/Home.html").hasAnyRole("user2","user")
+//              .antMatchers("/Home.html").hasAnyRole("user2","user")
+                //此处只允许127.0.0.1的IP地址访问
+//              .antMatchers("/Home.html").hasIpAddress("127.0.0.1")
+
             //所有请求都需要认证
             .anyRequest()
             .authenticated();
+          //次方法相当于上面aurhenticated()
+//        .access("@customerServiceImpl.hasPermission(request,authentication)");
         //防伪标识关闭
 //        ①
         http.csrf().disable();
+//       设置异常处理的hanle
+        http.exceptionHandling().accessDeniedHandler(customerAccessDeniedHandler);
+
+        http.rememberMe()
+                //登录逻辑
+                .userDetailsService(userServiveDetail)
+                //持久层对象
+                .tokenRepository(persistentTokenRepository);
+
+        //退出登录指定跳转的页面，默认情况会带一个参数，如果不想要就需要做如下的设置
+        http.logout()
+                .logoutSuccessUrl("/login.html");
+
+
+
     }
 }
