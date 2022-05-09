@@ -18,6 +18,7 @@
         <module>security-login</module>
         <module>security-oauth2</module>
         <module>security-oauth2-client</module>
+        <module>security-gateway</module>
     </modules>
 
     <properties>
