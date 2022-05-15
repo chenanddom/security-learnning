@@ -68,7 +68,7 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
         clients.withClientDetails(clientDetailsService);
 
     }
-
+    //oauth2必须要要重写的方法
     @Override
     public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
         security.allowFormAuthenticationForClients();

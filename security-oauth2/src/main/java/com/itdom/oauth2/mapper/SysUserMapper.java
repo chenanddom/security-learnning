@@ -1,7 +1,6 @@
 package com.itdom.oauth2.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.itdom.oauth2.pojo.entity.SysUser;
 import org.apache.ibatis.annotations.Mapper;
 
