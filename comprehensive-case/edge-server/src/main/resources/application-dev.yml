@@ -1,0 +1,45 @@
+spring:
+  application:
+    name: edge-server
+  cloud:
+    nacos:
+      discovery:
+        server-addr: http://192.168.6.108:8848
+    gateway:
+      discovery:
+        locator:
+          enabled: true #启用服务发现
+          lowerCaseServiceId: true
+      routes:
+        - id: product-management
+          uri: lb://product-management
+          predicates:
+            - Path=/product-management/**
+          filters:
+            - StripPrefix=1
+        - id: auth-center
+          uri: lb://auth-center
+          predicates:
+            - Path=/oauth/**
+          filters:
+            - StripPrefix=1
+  redis:
+    host: 127.0.0.1
+    password:
+    port: 6379
+    timeout: 15000
+    jedis:
+      pool:
+        max-active: 600
+        max-idle: 300
+        max-wait: 15000
+        min-idle: 10
+
+oauth2:
+  sys:
+    parameter:
+      ignoreUrls:
+        - /oauth/token
+        - /oauth/authorize
+        - /auth-center/oauth/token
+        - /auth-center/oauth/authorize
