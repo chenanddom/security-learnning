@@ -13,7 +13,6 @@ import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
 /**
- * @author 公众号：码猿技术专栏
  * JWT认证管理器，主要的作用就是对携带过来的token进行校验，比如过期时间，加密方式等
  * 一旦token校验通过，则交给鉴权管理器进行鉴权
  */

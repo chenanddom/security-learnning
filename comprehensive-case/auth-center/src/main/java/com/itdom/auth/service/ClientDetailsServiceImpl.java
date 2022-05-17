@@ -3,6 +3,7 @@ package com.itdom.auth.service;
 import com.itdom.auth.entity.SysOauthClient;
 import com.itdom.auth.mapper.SysOauthClientMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.provider.ClientDetails;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.ClientRegistrationException;
@@ -15,6 +16,8 @@ import org.springframework.util.StringUtils;
 public class ClientDetailsServiceImpl implements ClientDetailsService {
     @Autowired
     private SysOauthClientMapper sysOauthClientMapper;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public ClientDetails loadClientByClientId(String clientId) throws ClientRegistrationException {
